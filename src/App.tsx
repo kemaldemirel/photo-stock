@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 
-function App() {
-  return <div className="App">11</div>;
-}
+const App: FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
+  );
+};
 
 export default App;
