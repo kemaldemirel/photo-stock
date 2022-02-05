@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { TitlebarImageList } from '../components/ImageList';
 import Loader from '../components/loader';
+import { BasicModal } from '../components/Modal/BasicModal';
 import { PaginationRounded } from '../components/Pagination';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchPhotos } from '../redux/actions/fetchPhotos';
@@ -16,13 +17,10 @@ const Home: FC = () => {
     dispatch(fetchPhotos());
   }, []);
 
-  const openModal = (id: number) => {
-    console.log(id);
+  const toggleModal = (id?: number) => {
     setShowModal((prev) => !prev);
-    setIdPhoto(id);
+    if (id) setIdPhoto(id);
   };
-
-  console.log(idPhoto);
 
   if (isLoading) {
     return <Loader />;
@@ -32,8 +30,9 @@ const Home: FC = () => {
     <div
       className={classes.homePge}
       style={{ width: '800px', margin: '0 auto', padding: '10px 0' }}>
-      <TitlebarImageList openModal={openModal} photosList={photos} />
+      <TitlebarImageList toggleModal={toggleModal} photosList={photos} />
       <PaginationRounded />
+      {idPhoto && <BasicModal id={idPhoto} showModal={showModal} toggleModal={toggleModal} />}
     </div>
   );
 };

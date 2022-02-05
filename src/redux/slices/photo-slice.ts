@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IState } from '../../types/index';
+import { deleteImage } from '../actions/deleteImage';
 import { fetchPhotos } from '../actions/fetchPhotos';
 
 const initialState: IState = {
@@ -21,6 +22,17 @@ const photoSlice = createSlice({
       state.photos.push(...payload);
     },
     [fetchPhotos.rejected.type]: (state, action) => {
+      state.error = action.payload;
+    },
+    [deleteImage.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [deleteImage.fulfilled.type]: (state, { payload }) => {
+      console.log(payload);
+      state.isLoading = false;
+      state.photos = state.photos.filter((photo) => photo.id !== payload.id);
+    },
+    [deleteImage.rejected.type]: (state, action) => {
       state.error = action.payload;
     },
   },
