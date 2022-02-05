@@ -8,11 +8,21 @@ import classes from './home.module.scss';
 
 const Home: FC = () => {
   const { isLoading, photos, error } = useAppSelector((state) => state.photos);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [idPhoto, setIdPhoto] = React.useState<number | null>(null);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     dispatch(fetchPhotos());
   }, []);
+
+  const openModal = (id: number) => {
+    console.log(id);
+    setShowModal((prev) => !prev);
+    setIdPhoto(id);
+  };
+
+  console.log(idPhoto);
 
   if (isLoading) {
     return <Loader />;
@@ -22,7 +32,7 @@ const Home: FC = () => {
     <div
       className={classes.homePge}
       style={{ width: '800px', margin: '0 auto', padding: '10px 0' }}>
-      <TitlebarImageList photosList={photos} />
+      <TitlebarImageList openModal={openModal} photosList={photos} />
       <PaginationRounded />
     </div>
   );
